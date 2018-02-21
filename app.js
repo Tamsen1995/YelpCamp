@@ -3,17 +3,15 @@ var app = express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 
-
 mongoose.connect("mongodb://localhost/yelp_camp");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-
-
 // SCHEMA SETUP
 
 var campgroundSchema = new mongoose.Schema({
 	name: String,
-	image: String
+	image: String,
+	description: String
 });
 
 var Campground = mongoose.model("Campground", campgroundSchema);
@@ -22,6 +20,7 @@ app.get("/", function (req, res) {
 	res.render("landing")
 });
 
+// INDEX RESTful convention
 // retrieving campgrounds from the db
 app.get("/campgrounds", function (req, res) {
 
@@ -29,15 +28,17 @@ app.get("/campgrounds", function (req, res) {
 		if (err) {
 			console.log(err);
 		} else {
-			res.render("campgrounds", { campgrounds: allCampgrounds });
+			res.render("index", { campgrounds: allCampgrounds });
 		}
 	});
 });
 
+// CREATE RESTful convention
 app.post("/campgrounds", function (req, res) {
 	var name = req.body.name;
 	var image = req.body.image;
-	var newCampGround = { name: name, image: image }
+	var desc = req.body.desc
+	var newCampGround = { name: name, image: image, description: desc }
 	// Create new campground and save to db
 	Campground.create(newCampGround, function (err, newlyCreated) {
 		if (err) {
@@ -49,9 +50,25 @@ app.post("/campgrounds", function (req, res) {
 	// redirect to the campgrounds page
 });
 
+
 app.get("/campgrounds/new", function (req, res) {
 	res.render("new.ejs");
 });
+
+
+// SHOW RESTful convention
+//displaying especific campground
+app.get("/campgrounds/:id", function (req, res) {
+	//find campground with id
+	Campground.findById(req.params.id, function (err, foundCampground) {
+
+		if (err) {
+			console.log(err);
+		} else {
+			res.render("show", { campground: foundCampground });
+		}
+	});
+})
 
 const port = process.env.PORT || 5000
 
