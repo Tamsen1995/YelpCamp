@@ -1,3 +1,3 @@
 git add -A
-git commit -m "[UPD] The description still doesn't show up. I suspect it might be something in the show.ejs"
+git commit -m "[FIX] Fixed the description error."
 git push origin master
