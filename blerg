@@ -1,0 +1,4 @@
+git add -A
+git commit -m "[ADD] first push. General structure of website established as well as some backend routing done. 
+Connection to mongodb done and also some interaction with the db established"
+git push origin master
