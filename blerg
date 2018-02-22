@@ -1,3 +1,3 @@
 git add -A
-git commit -m "[UPD] Starting to implement the seeding of the database on the startup of the server."
+git commit -m "[UPD] Populating the comments array in the show route"
 git push origin master
